@@ -4,6 +4,7 @@ $:.unshift(File.dirname(__FILE__)) unless
 require 'date'
 require 'csv'
 require 'yahoo_stock/base.rb'
+require 'yahoo_stock/conversion.rb'
 require 'yahoo_stock/interface.rb'
 require 'yahoo_stock/history.rb'
 require 'yahoo_stock/scrip_symbol.rb'

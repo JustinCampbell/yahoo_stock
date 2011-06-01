@@ -20,7 +20,7 @@ module YahooStock
       @data.each do |datum|
         row_values = {}
         datum.each_with_index do |item, i|
-          row_values[keys[i]] = item
+          row_values[keys[i]] = YahooStock::Conversion.convert keys[i], item
         end
         data << row_values
       end

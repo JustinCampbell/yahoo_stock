@@ -27,6 +27,11 @@ module YahooStock
       end
     end
     
+    # Set conversion class variable toggle
+    def convert=(boolean)
+      @@convert = boolean ? true : false
+    end
+    
     # Abstract method
     def data_attributes
       raise 'Abstract method called. Use the subclass data_attributes method'
