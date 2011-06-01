@@ -3,6 +3,8 @@ module YahooStock
   
   class Base
     
+    @@convert = false
+    
     def initialize(interface)
       @interface = interface
     end
@@ -28,8 +30,14 @@ module YahooStock
     end
     
     # Set conversion class variable toggle
-    def convert=(boolean)
+    def convert(boolean = true)
       @@convert = boolean ? true : false
+    end
+    
+    alias_method :convert=, :convert
+    
+    def convert?
+      @@convert
     end
     
     # Abstract method

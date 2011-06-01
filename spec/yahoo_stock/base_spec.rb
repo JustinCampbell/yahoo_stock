@@ -45,4 +45,24 @@ describe YahooStock::Base do
       lambda { @base.data_attributes }.should raise_error(RuntimeError, 'Abstract method called. Use the subclass data_attributes method')
     end
   end
+  
+  describe "conversion" do
+    it "should default @@convert to false" do
+      @base.convert?.should equal(false)
+    end
+    
+    it "should allow convert = to set convert to true and false" do
+      @base.convert?.should equal(false)
+      @base.convert = true
+      @base.convert?.should equal(true)
+      @base.convert = false
+      @base.convert?.should equal(false)
+    end
+    
+    it "should set @@convert to true by default if convert is called" do
+      @base.convert?.should equal(false)
+      @base.convert
+      @base.convert?.should equal(true)
+    end
+  end
 end
