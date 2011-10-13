@@ -1,11 +1,11 @@
 module YahooStock
-  
+
   class Conversion < Base
-    
+
     def self.convert(parameter, data)
       # Return immediately if we're not converting anything
       return data unless @@convert
-      
+
       # If we have a conversion defined for this parameter, convert it, otherwise just return the data
       if CONVERSIONS[parameter]
         self.send CONVERSIONS[parameter.to_sym], data
@@ -13,7 +13,7 @@ module YahooStock
         data
       end
     end
-    
+
     CONVERSIONS = {
       # :after_hours_change_real_time
       # :annualized_gain
@@ -94,15 +94,22 @@ module YahooStock
       # :two_hundred_day_moving_average
       :volume => :integer
     } unless defined? CONVERSIONS
-    
+
     protected
-    
+
     # Converts strings to dates. Supports YY before 1970, and dates expressed as MMM dd (Jan  1)
     def self.date(string)
-      date = string.split('/')
-      month = date[0]
-      day   = date[1]
-      year  = date[2] || Date.today.year.to_s
+      if matchdata = string.match(/([A-Za-z]{3}) {1,2}([0-9]{1,2})/)
+        month = Date.strptime(matchdata[1],"%b").month
+        day   = matchdata[2]
+        year  = Date.today.year.to_s
+      else
+        date  = string.split('/')
+        month = date[0]
+        day   = date[1]
+        year  = date[2] or Date.today.year.to_s
+      end
+
       case year.length
       when 4
         yyyy = year
@@ -110,25 +117,25 @@ module YahooStock
         # If the 2 digit year is in the future, treat it as 19xx
         yyyy = year > Date.today.year.to_s[2,2] ? "19" << year : "20" << year
       end
-      
+
       # Return properly parsed date
-      Date.parse "#{month}/#{day}/#{yyyy}"
+      Date.strptime "#{month}/#{day}/#{yyyy}", '%m/%d/%Y'
     end
-    
+
     # Converts strings to BigDecimal objects
     def self.decimal(string)
       BigDecimal.new string
     end
-    
+
     # Converts strings ending with a large number abbreviation to integers
     def self.integer(string)
-      
+
       # Remove commas from the string
       string.delete! ","
-      
+
       # Check if we're converting from a big number suffix
       if %w[B M K].include? string[-1,1]
-        
+
         # Set the multiplier by the suffix
         multiplier = case string[-1,1]
           when "B" then 1_000_000_000
@@ -136,19 +143,19 @@ module YahooStock
           when "K" then 1_000
           else 1
         end
-        
+
         # Multiply the remaining string and convert to an integer
         (BigDecimal.new(string) * multiplier).to_i
-        
+
       else
-        
+
         # Try to convert the string to an integer
         string.to_i
-        
+
       end
-      
+
     end
-    
+
   end
-  
+
 end
