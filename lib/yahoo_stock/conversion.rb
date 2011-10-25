@@ -99,6 +99,8 @@ module YahooStock
 
     # Converts strings to dates. Supports YY before 1970, and dates expressed as MMM dd (Jan  1)
     def self.date(string)
+      return nil if string.nil? or string.empty?
+
       if matchdata = string.match(/([A-Za-z]{3}) {1,2}([0-9]{1,2})/)
         month = Date.strptime(matchdata[1],"%b").month
         day   = matchdata[2]
@@ -124,11 +126,14 @@ module YahooStock
 
     # Converts strings to BigDecimal objects
     def self.decimal(string)
+      return nil if string.nil? or string.empty?
+
       BigDecimal.new string
     end
 
     # Converts strings ending with a large number abbreviation to integers
     def self.integer(string)
+      return nil if string.nil? or string.empty?
 
       # Remove commas from the string
       string.delete! ","

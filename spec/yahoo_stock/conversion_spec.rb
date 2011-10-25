@@ -21,6 +21,14 @@ describe YahooStock::Conversion do
     it "should convert dates from m/d/yy from before 1970" do
       YahooStock::Conversion.date("2/4/68").should == Date.parse("02/04/1968")
     end
+
+    it "should handle nil values" do
+      YahooStock::Conversion.date(nil).should be(nil)
+    end
+
+    it "should handle empty strings" do
+      YahooStock::Conversion.date("").should be(nil)
+    end
   end
   
   describe "decimal" do
@@ -30,6 +38,14 @@ describe YahooStock::Conversion do
     
     it "should convert negative decimals" do
       YahooStock::Conversion.decimal("-123.45").should == -123.45
+    end
+
+    it "should handle nil values" do
+      YahooStock::Conversion.decimal(nil).should be(nil)
+    end
+
+    it "should handle empty strings" do
+      YahooStock::Conversion.decimal("").should be(nil)
     end
   end
   
@@ -52,6 +68,14 @@ describe YahooStock::Conversion do
     
     it "should convert comma-delimited strings" do
       YahooStock::Conversion.integer("1,234").should == 1_234
+    end
+
+    it "should handle nil values" do
+      YahooStock::Conversion.integer(nil).should be(nil)
+    end
+
+    it "should handle empty strings" do
+      YahooStock::Conversion.integer("").should be(nil)
     end
   end
   
