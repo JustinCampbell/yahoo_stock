@@ -22,6 +22,14 @@ describe YahooStock::Conversion do
       YahooStock::Conversion.date("2/4/68").should == Date.parse("02/04/1968")
     end
 
+    it "should convert dates from dd-mon-yy" do
+      YahooStock::Conversion.date("21-Nov-95").should == Date.parse("11/21/1995")
+    end
+
+    it "should convert dates with whitespace" do
+      YahooStock::Conversion.date(" 9-Dec-10").should == Date.parse("12/9/2010")
+    end
+
     it "should handle nil values" do
       YahooStock::Conversion.date(nil).should be(nil)
     end

@@ -105,6 +105,10 @@ module YahooStock
         month = Date.strptime(matchdata[1],"%b").month
         day   = matchdata[2]
         year  = Date.today.year.to_s
+      elsif matchdata = string.match(/([0-9]{1,2})-([A-Za-z]{3})-([0-9]{2,4})/)
+        day   = matchdata[1]
+        month = Date.strptime(matchdata[2],"%b").month
+        year  = matchdata[3] or Date.today.year.to_s
       else
         date  = string.split('/')
         month = date[0]
