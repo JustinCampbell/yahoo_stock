@@ -29,6 +29,10 @@ describe YahooStock::Conversion do
     it "should handle empty strings" do
       YahooStock::Conversion.date("").should be(nil)
     end
+
+    it "should handle N/A" do
+      YahooStock::Conversion.date("N/A").should be(nil)
+    end
   end
   
   describe "decimal" do
@@ -46,6 +50,10 @@ describe YahooStock::Conversion do
 
     it "should handle empty strings" do
       YahooStock::Conversion.decimal("").should be(nil)
+    end
+
+    it "should handle N/A" do
+      YahooStock::Conversion.decimal("N/A").should be(nil)
     end
   end
   
@@ -76,6 +84,10 @@ describe YahooStock::Conversion do
 
     it "should handle empty strings" do
       YahooStock::Conversion.integer("").should be(nil)
+    end
+
+    it "should handle N/A" do
+      YahooStock::Conversion.integer("N/A").should be(nil)
     end
   end
   
