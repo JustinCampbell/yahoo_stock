@@ -125,7 +125,11 @@ module YahooStock
       end
 
       # Return properly parsed date
-      Date.strptime "#{month}/#{day}/#{yyyy}", '%m/%d/%Y'
+      begin
+        Date.strptime "#{month}/#{day}/#{yyyy}", '%m/%d/%Y'
+      rescue ArgumentError => e
+        raise ArgumentError, "#{e.message} #{month.inspect}/#{day.inspect}/#{yyyy.inspect}"
+      end
     end
 
     # Converts strings to BigDecimal objects
