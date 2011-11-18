@@ -104,19 +104,19 @@ module YahooStock
       if matchdata = string.match(/([A-Za-z]{3}) {1,2}([0-9]{1,2})/)
         month = Date.strptime(matchdata[1],"%b").month
         day   = matchdata[2]
-        year  = Date.today.year.to_s
+        year  = closest_year_for month, day
       elsif matchdata = string.match(/([0-9]{1,2})-([A-Za-z]{3})-([0-9]{2,4})/)
         day   = matchdata[1]
         month = Date.strptime(matchdata[2],"%b").month
-        year  = matchdata[3] or Date.today.year.to_s
+        year  = matchdata[3] or closest_year_for month, day
       else
         date  = string.split('/')
         month = date[0]
         day   = date[1]
-        year  = date[2] or Date.today.year.to_s
+        year  = date[2] or closest_year_for month, day
       end
 
-      case year.length
+      case year.to_s.length
       when 4
         yyyy = year
       when 2
@@ -167,6 +167,23 @@ module YahooStock
 
       end
 
+    end
+
+    private
+
+    def self.closest_year_for(month, day)
+      this_year = Date.today.year
+
+      previous_year = this_year - 1
+      next_year     = this_year + 1
+
+      years = [previous_year, this_year, next_year]
+
+      years_offset = years.map { |year|
+        (Date.parse("#{month}/#{day}/#{year}",'%m/%d/%Y') - Date.today).to_i.abs
+      }
+
+      years[years_offset.index years_offset.min]
     end
 
   end

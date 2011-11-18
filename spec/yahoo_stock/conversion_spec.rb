@@ -10,10 +10,31 @@ describe YahooStock::Conversion do
   end
   
   describe "date" do
-    it "should convert dates from MMM dd" do
-      YahooStock::Conversion.date("Jan  1").should == Date.parse("Jan  1 #{Time.now.year}")
+    describe "from MMM dd" do
+      it "should convert dates to the closest date" do
+        Time.stub!(:now).and_return(Time.mktime(2011,9,1))
+        YahooStock::Conversion.date("Jul  1").to_s.should == Date.parse("Jul  1 2011").to_s
+        YahooStock::Conversion.date("Jan  1").to_s.should == Date.parse("Jan  1 2012").to_s
+      end
     end
-    
+
+    describe "closest year for" do
+      it "should return the previous year" do
+        Time.stub!(:now).and_return(Time.mktime(2011,6,1))
+        YahooStock::Conversion.closest_year_for(12,30).should == 2010
+      end
+
+      it "should return this year" do
+        Time.stub!(:now).and_return(Time.mktime(2011,7,1))
+        YahooStock::Conversion.closest_year_for(7,1).should == 2011
+      end
+
+      it "should return next year" do
+        Time.stub!(:now).and_return(Time.mktime(2011,8,1))
+        YahooStock::Conversion.closest_year_for(1,1).should == 2012
+      end
+    end
+
     it "should convert dates from m/d/yy" do
       YahooStock::Conversion.date("1/2/03").should == Date.parse("01/02/2003")
     end
