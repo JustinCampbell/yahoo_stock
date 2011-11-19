@@ -19,7 +19,7 @@ describe YahooStock::Conversion do
     end
 
     describe "closest year for" do
-      it "should return the previous year" do
+      it "should return last year" do
         Time.stub!(:now).and_return(Time.mktime(2011,6,1))
         YahooStock::Conversion.closest_year_for(12,30).should == 2010
       end
@@ -32,6 +32,11 @@ describe YahooStock::Conversion do
       it "should return next year" do
         Time.stub!(:now).and_return(Time.mktime(2011,8,1))
         YahooStock::Conversion.closest_year_for(1,1).should == 2012
+      end
+
+      it "should prefer leap years for Feb 29" do
+        Time.stub!(:now).and_return(Time.mktime(2011,6,1))
+        YahooStock::Conversion.closest_year_for(2,29).should == 2012
       end
     end
 

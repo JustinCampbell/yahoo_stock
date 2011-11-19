@@ -179,11 +179,15 @@ module YahooStock
 
       years = [previous_year, this_year, next_year]
 
-      years_offset = years.map { |year|
-        (Date.parse("#{month}/#{day}/#{year}",'%m/%d/%Y') - Date.today).to_i.abs
+      years = years.sort_by { |year|
+        begin
+          (Date.parse("#{month}/#{day}/#{year}",'%m/%d/%Y') - Date.today).to_i.abs
+        rescue ArgumentError
+          9999
+        end
       }
 
-      years[years_offset.index years_offset.min]
+      years.first
     end
 
   end
