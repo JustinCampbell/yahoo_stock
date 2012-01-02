@@ -13,8 +13,8 @@ describe YahooStock::Conversion do
     describe "from MMM dd" do
       it "should convert dates to the closest date" do
         Time.stub!(:now).and_return(Time.mktime(2011,9,1))
-        YahooStock::Conversion.date("Jul  1").to_s.should == Date.parse("Jul  1 2011").to_s
-        YahooStock::Conversion.date("Jan  1").to_s.should == Date.parse("Jan  1 2012").to_s
+        YahooStock::Conversion.date("Jul  1").to_s.should == Date.parse("2011-7-1").to_s
+        YahooStock::Conversion.date("Jan  1").to_s.should == Date.parse("2012-1-1").to_s
       end
     end
 
@@ -41,19 +41,19 @@ describe YahooStock::Conversion do
     end
 
     it "should convert dates from m/d/yy" do
-      YahooStock::Conversion.date("1/2/03").should == Date.parse("01/02/2003")
+      YahooStock::Conversion.date("1/2/03").should == Date.parse("2003-01-02")
     end
-    
+
     it "should convert dates from m/d/yy from before 1970" do
-      YahooStock::Conversion.date("2/4/68").should == Date.parse("02/04/1968")
+      YahooStock::Conversion.date("2/4/68").should == Date.parse("1968-02-04")
     end
 
     it "should convert dates from dd-mon-yy" do
-      YahooStock::Conversion.date("21-Nov-95").should == Date.parse("11/21/1995")
+      YahooStock::Conversion.date("21-Nov-95").should == Date.parse("1995-11-21")
     end
 
     it "should convert dates with whitespace" do
-      YahooStock::Conversion.date(" 9-Dec-10").should == Date.parse("12/9/2010")
+      YahooStock::Conversion.date(" 9-Dec-10").should == Date.parse("2010-12-9")
     end
 
     it "should handle nil values" do

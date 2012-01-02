@@ -126,9 +126,9 @@ module YahooStock
 
       # Return properly parsed date
       begin
-        Date.strptime "#{month}/#{day}/#{yyyy}", '%m/%d/%Y'
+        Date.parse "#{yyyy}-#{month}-#{day}"
       rescue ArgumentError => e
-        raise ArgumentError, "#{e.message} #{month.inspect}/#{day.inspect}/#{yyyy.inspect}"
+        raise ArgumentError, "#{e.message} #{yyyy.inspect}-#{month.inspect}-#{day.inspect}"
       end
     end
 
@@ -181,7 +181,7 @@ module YahooStock
 
       years = years.sort_by { |year|
         begin
-          (Date.parse("#{month}/#{day}/#{year}",'%m/%d/%Y') - Date.today).to_i.abs
+          (Date.parse("#{year}-#{month}-#{day}") - Date.today).to_i.abs
         rescue ArgumentError
           9999
         end
