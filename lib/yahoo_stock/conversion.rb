@@ -60,7 +60,7 @@ module YahooStock
       # :holdings_gain_real_time
       # :holdings_value
       # :holdings_value_real_time
-      # :last_trade_date
+      :last_trade_date => :date,
       # :last_trade_price_only
       # :last_trade_real_time_with_time
       # :last_trade_time
