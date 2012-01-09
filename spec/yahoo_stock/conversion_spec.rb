@@ -1,8 +1,8 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe YahooStock::Conversion do
-  before(:each) do
-    
+  before :each do
+    Timecop.return
   end
   
   describe "convert" do
@@ -12,7 +12,7 @@ describe YahooStock::Conversion do
   describe "date" do
     describe "from MMM dd" do
       it "should convert dates to the closest date" do
-        Time.stub!(:now).and_return(Time.mktime(2011,9,1))
+        Timecop.travel Date.parse("2011-09-01")
         YahooStock::Conversion.date("Jul  1").to_s.should == Date.parse("2011-7-1").to_s
         YahooStock::Conversion.date("Jan  1").to_s.should == Date.parse("2012-1-1").to_s
       end
@@ -20,12 +20,12 @@ describe YahooStock::Conversion do
 
     describe "closest year for" do
       it "should return last year" do
-        Time.stub!(:now).and_return(Time.mktime(2011,6,1))
+        Timecop.travel Date.parse("2011-06-01")
         YahooStock::Conversion.closest_year_for(12,30).should == 2010
       end
 
       it "should return this year" do
-        Time.stub!(:now).and_return(Time.mktime(2011,7,1))
+        Timecop.travel Date.parse("2011-07-01")
         YahooStock::Conversion.closest_year_for(7,1).should == 2011
       end
 
