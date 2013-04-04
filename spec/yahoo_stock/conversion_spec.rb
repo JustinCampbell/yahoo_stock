@@ -12,7 +12,7 @@ describe YahooStock::Conversion do
   describe "date" do
     describe "from MMM dd" do
       it "should convert dates to the closest date" do
-        Timecop.travel Date.parse("2011-09-01")
+        Timecop.freeze Date.parse("2011-09-01")
         YahooStock::Conversion.date("Jul  1").to_s.should == Date.parse("2011-7-1").to_s
         YahooStock::Conversion.date("Jan  1").to_s.should == Date.parse("2012-1-1").to_s
       end
@@ -20,22 +20,22 @@ describe YahooStock::Conversion do
 
     describe "closest year for" do
       it "should return last year" do
-        Timecop.travel Date.parse("2011-06-01")
+        Timecop.freeze Date.parse("2011-06-01")
         YahooStock::Conversion.closest_year_for(12,30).should == 2010
       end
 
       it "should return this year" do
-        Timecop.travel Date.parse("2011-07-01")
+        Timecop.freeze Date.parse("2011-07-01")
         YahooStock::Conversion.closest_year_for(7,1).should == 2011
       end
 
       it "should return next year" do
-        Time.stub!(:now).and_return(Time.mktime(2011,8,1))
+        Timecop.freeze Date.parse("2011-08-01")
         YahooStock::Conversion.closest_year_for(1,1).should == 2012
       end
 
       it "should prefer leap years for Feb 29" do
-        Time.stub!(:now).and_return(Time.mktime(2011,6,1))
+        Timecop.freeze Date.parse("2011-06-01")
         YahooStock::Conversion.closest_year_for(2,29).should == 2012
       end
     end
