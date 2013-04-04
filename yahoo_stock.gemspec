@@ -66,4 +66,6 @@ Gem::Specification.new do |s|
   else
     s.add_dependency(%q<builder>, [">= 2.1.2"])
   end
+
+  s.add_development_dependency 'timecop'
 end
