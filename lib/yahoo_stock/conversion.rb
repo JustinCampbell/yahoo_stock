@@ -127,8 +127,7 @@ module YahooStock
       # Return properly parsed date
       begin
         Date.parse "#{yyyy}-#{month}-#{day}"
-      rescue ArgumentError => e
-        raise ArgumentError, "#{e.message} #{yyyy.inspect}-#{month.inspect}-#{day.inspect}"
+      rescue ArgumentError
       end
     end
 
